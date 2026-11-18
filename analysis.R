@@ -131,4 +131,30 @@ corrplot(
   tl.srt = 45,
   diag = FALSE
 )
+# Calculate the percentage earning >50K in each education group
+education_income <- tapply(
+  adult_clean$income == ">50K",
+  adult_clean$education,
+  mean
+) * 100
+
+# Print percentages
+round(education_income, 2)
+
+# Leave space for the education labels
+par(mar = c(5, 9, 4, 2))
+
+# Draw a horizontal bar chart
+barplot(
+  sort(education_income),
+  horiz = TRUE,
+  las = 1,
+  col = "lightblue",
+  main = "Income above $50K by education",
+  xlab = "Percentage within each education group",
+  xlim = c(0, 100)
+)
+
+# Restore normal plot margins
+par(mar = c(5, 4, 4, 2) + 0.1)
 
