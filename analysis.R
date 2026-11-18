@@ -106,3 +106,30 @@ tapply(
 # However, the middle 50% spans about 35–40 hours for <=50K
 # and 40–50 hours for >50K.
 # This shows an association, not proof that longer hours cause higher income.
+
+# Scatter plot of age and working hours
+plot(
+  adult_clean$age,
+  adult_clean$hours_per_week,
+  main = "Age and working hours",
+  xlab = "Age",
+  ylab = "Hours per week",
+  pch = 16,
+  cex = 0.5,
+  col = rgb(0, 0, 1, 0.1)
+)
+
+# Calculate Pearson correlation
+cor(
+  adult_clean$age,
+  adult_clean$hours_per_week
+)
+# Pearson correlation is approximately 0.069.
+# This shows a very weak positive linear relationship.
+# Working hours vary widely among people of the same age.
+# Many records report 40 hours per week across different ages.
+# A weak correlation does not rule out a curved relationship.
+
+
+
+
