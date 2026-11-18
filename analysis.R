@@ -67,3 +67,42 @@ sum(
 # The IQR rule flags 9,008 records with unusual working hours.
 # These values may represent genuine short or long working weeks.
 # Keep them because being unusual does not prove they are errors.
+
+# Explore the age distribution
+hist(
+  adult_clean$age,
+  main = "Age distribution",
+  xlab = "Age",
+  col = "lightblue",
+  border = "white"
+)
+
+# Calculate average and middle age
+mean(adult_clean$age)
+median(adult_clean$age)
+
+# Most people in the sample are around 20–50 years old.
+# The distribution is right-skewed, with fewer older adults.
+# A histogram helps show the shape and spread of age.
+
+# Compare working hours between income groups
+boxplot(
+  hours_per_week ~ income,
+  data = adult_clean,
+  main = "Working hours by income",
+  xlab = "Income group",
+  ylab = "Hours per week",
+  col = c("lightblue", "lightgreen")
+)
+
+# Median working hours for each group
+tapply(
+  adult_clean$hours_per_week,
+  adult_clean$income,
+  median
+)
+
+# Both income groups have a median of 40 working hours.
+# However, the middle 50% spans about 35–40 hours for <=50K
+# and 40–50 hours for >50K.
+# This shows an association, not proof that longer hours cause higher income.
