@@ -24,26 +24,29 @@ sum(duplicated(adult))
 
 
 # 2. CLEAN DATA
-adult_clean <- adult
 
+# Retain repeated rows: no person ID confirms they are duplicates.
+# Unknown labels preserve records without guessing missing information.
+# 1. Initialize dataset and check dimensions / missing values
+adult_clean <- adult
+dim(adult_clean)
+colSums(is.na(adult_clean))
+
+# 2. Impute missing categorical values with "Unknown"
 adult_clean$workclass[is.na(adult_clean$workclass)] <- "Unknown"
 adult_clean$occupation[is.na(adult_clean$occupation)] <- "Unknown"
 adult_clean$native_country[is.na(adult_clean$native_country)] <- "Unknown"
 
-# Retain repeated rows: no person ID confirms they are duplicates.
-# Unknown labels preserve records without guessing missing information.
-colSums(is.na(adult_clean))
-dim(adult_clean)
-
-# Check working-hour outliers using the IQR rule
+# 3. Check working-hour outliers using the IQR rule
 q1 <- quantile(adult_clean$hours_per_week, 0.25)
 q3 <- quantile(adult_clean$hours_per_week, 0.75)
+iqr_val <- q3 - q1
 
-lower <- q1 - 1.5 * (q3 - q1)
-upper <- q3 + 1.5 * (q3 - q1)
+lower <- q1 - 1.5 * iqr_val
+upper <- q3 + 1.5 * iqr_val
 
-sum(adult_clean$hours_per_week < lower |
-      adult_clean$hours_per_week > upper)
+# 4. Count the number of outliers
+sum(adult_clean$hours_per_week < lower | adult_clean$hours_per_week > upper)
 
 # Keep the 9,008 flagged records: short and long weeks can be valid.
 
@@ -120,8 +123,6 @@ par(mar = c(5, 4, 4, 2) + 0.1)
 
 # Bachelors: 41.48%; HS-grad: 15.95%.
 # This is association, not proof that education causes higher income.
-
-
 # 4. ENCODE, TRANSFORM AND RUN PCA
 
 # One-hot encode employment type: each category becomes a 0/1 column.
